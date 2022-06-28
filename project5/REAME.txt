@@ -1,0 +1,31 @@
+Justin Moore
+Assign, Cmpr, Cond, Decl, DeclInt, DeclRef, DeclSeq, Expr, Factor, Id, IdList, If
+Input, Loop, Main, Memory, Output, Parser, Program, StmtSeq, Term, all handle
+the nonterminal parts of the parse tree, specifically parsing, printing, and executing 
+the parse tree.
+scanner tokenizes input
+parser handles the parse operations
+memory handles the memory related operations when executing the parse tree
+Func handles each function including parsing and executing
+FuncCall handles calling each function
+
+memory is divided into three fields, global where all global variables reside in a
+map, static which is a list of lists of maps, and heap which is a list. each variable in a map
+has an ID and a seperate class with type and value, type being int or ref. memory
+handles updating all these variables and retreiving values. scope is handled with memory
+searching the most recent stack memory and only cheching older scope if the variable
+doesn't exist in the new scope. static scope is checked if the variable does not exist in 
+the stack scope.  
+the stack of scopes exist within a frame the memory only interacts with it's current frame 
+execpt in the case that a function is being passed variables from a previous frame
+when the program starts or a function is called a frame is created and appended to the stack 
+along with a new scope, when the program or a function ends that frame is popped from the stack
+
+along the heap there is also a reference count, whenever there is a new entry in the heap a new
+entry is added to the refrence count, whenever a reference variable refrences that heap entry, the
+corresponding reference count is incremented by one. Whenever a scope is exited the program checks 
+all reference variables in that scope to see if they point to an entry in the heap, if they do
+the corresponding entry in the refrence counts is decremented by one, and if that entry becomes
+zero, the heap entry and refrence count entry are both removed.
+
+there is no known bugs in the code as tested by the provided test cases
